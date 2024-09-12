@@ -6,11 +6,10 @@ import numpy as np
 import torch
 import os, shutil
 from PIL import Image
+import folder_paths
    
 class DepthFlow:
 
-    NAME = "DepthFlow"
-    CATEGORY = "utils"
     def __init__(self):
         self.glob_estimator = None
 
@@ -27,9 +26,9 @@ class DepthFlow:
         return {
       "required": {
         "images": ("IMAGE",),
-        "fps": ("INT",{"default": 24, "min": 8, "max": 100, "step": 1}), 
-        "width": ("INT",  {"default": 20, "min": 20, "max": 9999, "step": 1}), 
-        "height": ("INT",  {"default": 20, "min": 20, "max": 9999, "step": 1}), 
+        "fps": ("INT",{"default": 24, "min": 8, "max": 60, "step": 1}), 
+        "width": ("INT",  {"default": 512, "min": 20, "max": 9999, "step": 1}), 
+        "height": ("INT",  {"default": 512, "min": 20, "max": 9999, "step": 1}), 
         "filename_prefix": ("STRING", {"default": "depthflow"}),
       },    
         }
@@ -41,8 +40,6 @@ class DepthFlow:
 
     CATEGORY = "DepthFlow"
 
-    def IS_CHANGED(s):
-        return False
 
     def doit(self, images, fps, width, height, filename_prefix):
         
@@ -57,14 +54,20 @@ class DepthFlow:
         frame = img.convert('RGB')
 
         random_number = random.randint(0, 1073741824)
-        tmpfile_path = os.path.join(filename_prefix, 'in{}.png'.format(random_number))
+        input_dir = folder_paths.get_input_directory()
+        tmpfile_path = os.path.join(input_dir, 'depthin{}.png'.format(random_number))
         frame.save(tmpfile_path)
         depthflow.input(image=tmpfile_path)
         
-        save_path = os.path.join(filename_prefix, str(random_number))
+        output_dir = folder_paths.get_output_directory()
+        full_output_folder, filename, counter, subfolder, filename_prefix = folder_paths.get_save_image_path(filename_prefix, output_dir, width, height)
+        
+        file =  f"{filename}_{counter:05}_.mp4"
+        save_path = os.path.join(full_output_folder, file)
+
         depthflow.main(output=save_path, fps=fps, width=width, height=height)
         depthflow.window.destroy()  # trick 2 to avoid vram leak
         shutil.os.remove(tmpfile_path)
         #del depthflow
 
-        return (filename_prefix)
+        return (save_path, )

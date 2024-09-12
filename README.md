@@ -4,5 +4,13 @@ comfyui custom node for depthflow
 original depthflow website: https://github.com/BrokenSource/DepthFlow
 
 check this for installation: https://brokensrc.dev/get/
-I believe run commands below is enough: 
+
+For Ubuntu system, I believe run commands below is enough: 
+
+sudo apt-get update
+sudo apt-get install libegl1-mesa libgl1-mesa-glx libgles2-mesa
+apt install libasound2-dev
 python -m pip install depthflow 
+
+And run the workflow will download depth-anything/Depth-Anything-V2-base-hf from huggingface to your local directory automatically.
+you can check it at directory: ~/.cache/huggingface/hub/models--depth-anything--Depth-Anything-V2-base-hf 
