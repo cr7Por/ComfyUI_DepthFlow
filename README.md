@@ -14,3 +14,8 @@ python -m pip install depthflow
 
 And run the workflow will download depth-anything/Depth-Anything-V2-base-hf from huggingface to your local directory automatically.
 you can check it at directory: ~/.cache/huggingface/hub/models--depth-anything--Depth-Anything-V2-base-hf 
+
+if OpenGL can find gpu, you will see log like below, and the code will run quite fast, otherwise it will run really slow.
+OpenGL Renderer: NVIDIA GeForce RTX ...
+
+Good Luck, have fun!
