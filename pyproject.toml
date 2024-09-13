@@ -1,0 +1,14 @@
+[project]
+name = "comfyui_depthflow"
+description = "comfyui custom node for depthflow\noriginal depthflow website: [a/https://github.com/BrokenSource/DepthFlow](https://github.com/BrokenSource/DepthFlow)\ncheck this for installation: [a/https://brokensrc.dev/get/](https://brokensrc.dev/get/)"
+version = "1.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/cr7Por/ComfyUI_DepthFlow"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI_DepthFlow"
+Icon = ""
