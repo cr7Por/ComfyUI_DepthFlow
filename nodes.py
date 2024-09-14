@@ -1,8 +1,11 @@
 from DepthFlow import DepthScene
 from ShaderFlow.Message import ShaderMessage
+from DepthFlow.State import DepthState
+from DepthFlow.Motion import Presets
+import copy
 from attr import Factory, define
 from Broken.Externals.Depthmap import DepthAnythingV2, DepthEstimator
-import random
+import random, math
 import numpy as np
 import torch
 import os, shutil
@@ -11,8 +14,15 @@ import folder_paths
 
 class DepthScene_ComfyUI(DepthScene):
     def update(self):
-        if self.frame == 0: 
-            self.time += 0.0001  # trick to make first frame right
+        #self.state.offset_x = math.sin(2*self.cycle)
+        self.animate()
+
+    def setup(self):
+        if self.image.is_empty():
+            self.input(image=DepthScene.DEFAULT_IMAGE)
+        if (not self.animation):
+            self.add_animation(Presets.Orbital())
+        self.time = 0.0001
 
     def pipeline(self):
         yield from DepthScene.pipeline(self)
