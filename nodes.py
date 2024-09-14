@@ -1,4 +1,5 @@
 from DepthFlow import DepthScene
+from ShaderFlow.Message import ShaderMessage
 from attr import Factory, define
 from Broken.Externals.Depthmap import DepthAnythingV2, DepthEstimator
 import random
@@ -7,6 +8,17 @@ import torch
 import os, shutil
 from PIL import Image
 import folder_paths
+
+class DepthScene_ComfyUI(DepthScene):
+    def update(self):
+        if self.frame == 0: 
+            self.time += 0.0001  # trick to make first frame right
+
+    def pipeline(self):
+        yield from DepthScene.pipeline(self)
+
+    def handle(self, message: ShaderMessage):
+        DepthScene.handle(self, message)
    
 class DepthFlow:
 
@@ -43,7 +55,7 @@ class DepthFlow:
 
     def doit(self, images, fps, width, height, filename_prefix):
         
-        depthflow = DepthScene(backend='headless')
+        depthflow = DepthScene_ComfyUI(backend='headless')
         
         if self.glob_estimator == None:   # trick 1 to avoid vram leak
             self.glob_estimator = depthflow.estimator
