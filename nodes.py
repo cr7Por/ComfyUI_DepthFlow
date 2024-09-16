@@ -51,6 +51,7 @@ class DepthFlow:
         "fps": ("INT",{"default": 24, "min": 8, "max": 60, "step": 1}), 
         "width": ("INT",  {"default": 512, "min": 20, "max": 9999, "step": 1}), 
         "height": ("INT",  {"default": 512, "min": 20, "max": 9999, "step": 1}), 
+        "time": ("INT",  {"default": 10, "min": 2, "max": 20, "step": 1}), 
         "filename_prefix": ("STRING", {"default": "depthflow"}),
       },    
         }
@@ -63,7 +64,7 @@ class DepthFlow:
     CATEGORY = "DepthFlow"
 
 
-    def doit(self, images, fps, width, height, filename_prefix):
+    def doit(self, images, fps, width, height, time, filename_prefix):
         
         depthflow = DepthScene_ComfyUI(backend='headless')
         
@@ -87,7 +88,7 @@ class DepthFlow:
         file =  f"{filename}_{counter:05}_.mp4"
         save_path = os.path.join(full_output_folder, file)
 
-        depthflow.main(output=save_path, fps=fps, width=width, height=height)
+        depthflow.main(output=save_path, fps=fps, width=width, height=height, time=time)
         depthflow.window.destroy()  # trick 2 to avoid vram leak
         shutil.os.remove(tmpfile_path)
         #del depthflow
